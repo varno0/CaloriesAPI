@@ -1,6 +1,8 @@
 package ru.varno.CaloriesAPI.dto;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +22,12 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class EatDTO {
 
+    @NotNull(message = "Client id should be not empty")
     private Long client_id;
 
     private String timestamp;
 
+    @Size(min = 1, message = "You must add at least 1 dish")
     private List<Long> dishes_id;
 
 
