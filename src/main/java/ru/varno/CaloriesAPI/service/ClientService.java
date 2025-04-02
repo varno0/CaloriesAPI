@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.varno.CaloriesAPI.exceptions.UserNotFoundException;
+import ru.varno.CaloriesAPI.exceptions.UserWithDuplicateEmailException;
 import ru.varno.CaloriesAPI.models.Client;
 import ru.varno.CaloriesAPI.repositories.ClientRepositories;
 
@@ -16,12 +17,14 @@ public class ClientService {
 
     @Transactional
     public Client save(Client client) {
-        return clientRepositories.save(client);
+        if (!clientRepositories.existsByEmail(client.getEmail()))
+            return clientRepositories.save(client);
+        throw new UserWithDuplicateEmailException("Client with email " + client.getEmail() + " exist yet");
     }
 
     public Client findById(Long id) {
         return clientRepositories.findById(id).orElseThrow(
-                () -> new UserNotFoundException("User not found with id " + id));
+                () -> new UserNotFoundException("User with id " + id + " not found"));
     }
 
 

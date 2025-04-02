@@ -22,13 +22,16 @@ public class ClientDTO {
     @NotEmpty(message = "Email should be not empty!")
     private String email;
     @NotNull(message = "Age should not be empty!")
-    @Size(min = 1, max = 200, message = "Age should be between 1 and 200")
+    @Min(value = 1, message = "Age should be between 1 and 200")
+    @Max(value = 200, message = "Age should be between 1 and 200")
     private Integer age;
     @NotNull(message = "Weight should not be empty!")
-    @Size(min = 1, max = 400, message = "weight should be between 1 and 400")
+    @Min(value = 1, message = "weight should be between 1 and 400")
+    @Max(value = 400, message = "weight should be between 1 and 400")
     private Integer weight;
     @NotNull(message = "Height should not be empty!")
-    @Size(min = 1, max = 400, message = "height should be between 1 and 400")
+    @Min(value = 1, message = "height should be between 1 and 400")
+    @Max(value = 400, message = "height should be between 1 and 400")
     private Integer height;
     @NotNull(message = "Purpose should not be empty!")
     private Purpose purpose;

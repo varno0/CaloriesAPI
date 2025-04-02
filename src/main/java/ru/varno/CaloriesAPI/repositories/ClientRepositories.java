@@ -7,4 +7,6 @@ import ru.varno.CaloriesAPI.models.Client;
 @Repository
 public interface ClientRepositories extends JpaRepository<Client, Long> {
 
+    boolean existsByEmail(String email);
+
 }
