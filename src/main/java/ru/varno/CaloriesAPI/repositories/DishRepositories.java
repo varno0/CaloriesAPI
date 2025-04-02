@@ -6,5 +6,5 @@ import ru.varno.CaloriesAPI.models.Dish;
 
 @Repository
 public interface DishRepositories extends JpaRepository<Dish, Long> {
-
+    boolean existsByName(String name);
 }
