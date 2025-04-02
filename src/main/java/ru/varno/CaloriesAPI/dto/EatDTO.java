@@ -39,11 +39,9 @@ public class EatDTO {
                         Timestamp.valueOf(LocalDateTime.now()) :
                         Timestamp.valueOf(dto.timestamp))
                 .dishes(dto.dishes_id.stream()
-                        .map(i -> {
-                            return Dish.builder()
-                                    .id(i)
-                                    .build();
-                        }).collect(Collectors.toList()))
+                        .map(i -> Dish.builder()
+                                .id(i)
+                                .build()).collect(Collectors.toList()))
                 .build();
     }
 
