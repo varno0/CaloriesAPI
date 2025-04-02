@@ -2,11 +2,9 @@ package ru.varno.CaloriesAPI.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.varno.CaloriesAPI.dto.DailyReportDTO;
+import ru.varno.CaloriesAPI.exceptions.UserNotFoundException;
 import ru.varno.CaloriesAPI.service.ReportsService;
 
 import java.time.Instant;
@@ -25,6 +23,7 @@ public class ReportsController {
         if (timestamp == null || timestamp.isEmpty()) {
             timestamp = Instant.now().toString();
         }
+
         return ResponseEntity.ok(reportsService.getDailyReport(timestamp, id));
     }
 
@@ -36,8 +35,11 @@ public class ReportsController {
     @GetMapping("/getAllDailyReports")
     public ResponseEntity<?> getAllDailyReports(@RequestParam Long id) {
         List<DailyReportDTO> reports = reportsService.getAllDailyReports(id);
-
-
         return ResponseEntity.ok(reports);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handle(UserNotFoundException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

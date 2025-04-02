@@ -11,7 +11,6 @@ import ru.varno.CaloriesAPI.models.Client;
 import ru.varno.CaloriesAPI.models.Dish;
 import ru.varno.CaloriesAPI.models.Eat;
 import ru.varno.CaloriesAPI.repositories.ClientRepositories;
-import ru.varno.CaloriesAPI.repositories.DishRepositories;
 import ru.varno.CaloriesAPI.repositories.EatRepositories;
 
 import java.sql.Timestamp;
@@ -25,10 +24,11 @@ public class ReportsService {
 
     private final ClientRepositories clientRepositories;
     private final EatRepositories eatRepositories;
-    private final DishRepositories dishRepositories;
 
 
     public DailyReportDTO getDailyReport(String timestamp, Long id) {
+        if (!clientRepositories.existsById(id))
+            throw new UserNotFoundException("User not found");
         LocalDate day = LocalDate.ofInstant(Instant.parse(timestamp), ZoneId.systemDefault());
 
         List<Eat> eats = eatRepositories.findAllByTimestampBetweenAndClient_Id(Timestamp.valueOf(day.atStartOfDay()),
@@ -58,12 +58,12 @@ public class ReportsService {
     }
 
     public List<DailyReportDTO> getAllDailyReports(Long id) {
+        if (!clientRepositories.existsById(id))
+            throw new UserNotFoundException("User not found");
         Timestamp minTimestamp = eatRepositories.findMinTimestamp(id);
         LocalDate minDate = minTimestamp.toLocalDateTime().toLocalDate();
         return minDate.datesUntil(LocalDate.now().plusDays(1)).map(
-                date -> {
-                    return getDailyReport(date.atStartOfDay(ZoneId.systemDefault()).toInstant().toString(), id);
-                }
+                date -> getDailyReport(date.atStartOfDay(ZoneId.systemDefault()).toInstant().toString(), id)
         ).toList();
     }
 
