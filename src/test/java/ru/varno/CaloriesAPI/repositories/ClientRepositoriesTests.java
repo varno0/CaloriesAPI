@@ -34,5 +34,26 @@ public class ClientRepositoriesTests {
         assertThat(clientIsSaved.getId()).isNotNull();
     }
 
+    @Test
+    @DisplayName("Test find client by id functionality")
+    public void givenClient_whenFindClientById_thenClientIsFound() {
+        Long id = clientRepositories.save(DataUntil.getClient()).getId();
+
+        Client client = clientRepositories.findById(id).orElse(null);
+
+        assertThat(client).isNotNull();
+        assertThat(client.getId()).isEqualTo(id);
+    }
+
+    @Test
+    @DisplayName("Test exist client by id functionality")
+    public void givenIdExists_whenFindClientById_thenClientIsFound() {
+        Long id = clientRepositories.save(DataUntil.getClient()).getId();
+
+        boolean exists = clientRepositories.existsById(id);
+
+        assertThat(exists).isTrue();
+    }
+
 
 }

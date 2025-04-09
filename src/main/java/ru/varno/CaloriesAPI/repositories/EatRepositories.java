@@ -13,6 +13,6 @@ public interface EatRepositories extends JpaRepository<Eat, Long> {
 
     List<Eat> findAllByTimestampBetweenAndClient_Id(Timestamp timestamp, Timestamp timestamp2, Long id);
 
-    @Query("SELECT min(timestamp) FROM Eat e")
+    @Query("SELECT min(timestamp) FROM Eat e where e.client.id = ?1")
     Timestamp findMinTimestamp(Long id);
 }
