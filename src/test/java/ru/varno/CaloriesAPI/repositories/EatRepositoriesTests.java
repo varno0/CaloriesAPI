@@ -34,19 +34,15 @@ public class EatRepositoriesTests {
     @Test
     @DisplayName("Test find minimal timestamp functionality")
     public void givenSavedEat_whenFindMinimalTimestamp_thenReturnMinimalTimestamp() {
-
-        Client client = clientRepositories.save(DataUntil.getClient());
-        Dish dish = dishRepositories.save(DataUntil.getDish());
-        Eat eat1 = Eat.builder()
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .dishes(List.of(dish))
-                .client(client)
-                .build();
-        Eat eat2 = Eat.builder()
-                .timestamp(Timestamp.valueOf(LocalDateTime.now().minusDays(1)))
-                .dishes(List.of(dish))
-                .client(client)
-                .build();
+        Client client = clientRepositories.save(DataUntil.getClientTransient());
+        Dish dish = dishRepositories.save(DataUntil.getDishTransient());
+        Eat eat1 = DataUntil.getEatTransient();
+        eat1.setClient(client);
+        eat1.setDishes(List.of(dish));
+        Eat eat2 = DataUntil.getEatTransient();
+        eat2.setClient(client);
+        eat2.setDishes(List.of(dish));
+        eat2.setTimestamp(Timestamp.valueOf(LocalDateTime.now().minusDays(1)));
         eatRepositories.save(eat1);
         eatRepositories.save(eat2);
 

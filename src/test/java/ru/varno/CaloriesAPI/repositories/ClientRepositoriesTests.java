@@ -26,7 +26,7 @@ public class ClientRepositoriesTests {
     @DisplayName("Test add client functionality")
     public void givenClient_whenSaveClient_thenClientIsSaved() {
         //given
-        Client client = DataUntil.getClient();
+        Client client = DataUntil.getClientTransient();
         //when
         Client clientIsSaved = clientRepositories.save(client);
         //then
@@ -37,7 +37,7 @@ public class ClientRepositoriesTests {
     @Test
     @DisplayName("Test find client by id functionality")
     public void givenClient_whenFindClientById_thenClientIsFound() {
-        Long id = clientRepositories.save(DataUntil.getClient()).getId();
+        Long id = clientRepositories.save(DataUntil.getClientTransient()).getId();
 
         Client client = clientRepositories.findById(id).orElse(null);
 
@@ -48,7 +48,7 @@ public class ClientRepositoriesTests {
     @Test
     @DisplayName("Test exist client by id functionality")
     public void givenIdExists_whenFindClientById_thenClientIsFound() {
-        Long id = clientRepositories.save(DataUntil.getClient()).getId();
+        Long id = clientRepositories.save(DataUntil.getClientTransient()).getId();
 
         boolean exists = clientRepositories.existsById(id);
 

@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.varno.CaloriesAPI.dto.DishDTO;
 import ru.varno.CaloriesAPI.dto.ErrorDTO;
 import ru.varno.CaloriesAPI.exceptions.DishAlreadyExistsException;
@@ -29,17 +26,15 @@ public class DishController {
                             .message(bindingResult.getAllErrors().getFirst().getDefaultMessage())
                             .build());
         }
-        try {
-            return ResponseEntity.ok(DishDTO.toDTO(
-                    dishService.save(
-                            DishDTO.toEntity(dish))));
-        } catch (DishAlreadyExistsException e) {
-            return ResponseEntity.badRequest()
-                    .body(ErrorDTO.builder()
-                            .status(400)
-                            .message(e.getMessage())
-                            .build());
-        }
+        return ResponseEntity.ok(DishDTO.toDTO(dishService.save(DishDTO.toEntity(dish))));
+    }
 
+    @ExceptionHandler
+    public ResponseEntity<ErrorDTO> handleException(DishAlreadyExistsException e) {
+        return ResponseEntity.badRequest()
+                .body(ErrorDTO.builder()
+                        .status(400)
+                        .message(e.getMessage())
+                        .build());
     }
 }

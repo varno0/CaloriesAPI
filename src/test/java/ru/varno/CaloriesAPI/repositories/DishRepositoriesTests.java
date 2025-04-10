@@ -24,7 +24,7 @@ public class DishRepositoriesTests {
     @Test
     @DisplayName("Test save dish functionality")
     public void givenDishToSave_whenSaveDish_thenSuccess() {
-        Dish dishToSave = DataUntil.getDish();
+        Dish dishToSave = DataUntil.getDishTransient();
         Dish savedDish = dishRepositories.save(dishToSave);
         assertThat(savedDish).isNotNull();
         assertThat(savedDish.getId()).isNotNull();
@@ -33,7 +33,7 @@ public class DishRepositoriesTests {
     @Test
     @DisplayName("Test exist dish by name")
     public void givenDishName_whenFindDishByName_thenSuccess() {
-        String dishName = dishRepositories.save(DataUntil.getDish()).getName();
+        String dishName = dishRepositories.save(DataUntil.getDishTransient()).getName();
 
         boolean exists = dishRepositories.existsByName(dishName);
 

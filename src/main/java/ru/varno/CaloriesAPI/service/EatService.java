@@ -24,8 +24,8 @@ public class EatService {
     @Transactional
     public Eat save(Eat eat) {
         if (clientRepositories.existsById(eat.getClient().getId()))
-            if (!eat.getDishes().stream().map(item ->
-                    dishRepositories.existsById(item.getId())).toList().contains(false))
+            if (!eat.getDishes().stream().map(dish ->
+                    dishRepositories.existsById(dish.getId())).toList().contains(false))
                 return eatRepositories.save(eat);
             else throw new DishNotFoundException("Some dish id not exist");
         else throw new UserNotFoundException("Client with id " + eat.getClient().getId() + " not found");

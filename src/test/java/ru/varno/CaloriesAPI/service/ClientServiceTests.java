@@ -34,7 +34,7 @@ public class ClientServiceTests {
     @Test
     @DisplayName("Test save client functionality")
     public void givenClientToSave_whenSaveClient_thenClientSaved() {
-        Client client = DataUntil.getClient();
+        Client client = DataUntil.getClientPersistent();
         client.setId(1L);
 
         BDDMockito.given(clientRepositories.existsByEmail(anyString()))
@@ -51,7 +51,7 @@ public class ClientServiceTests {
     @Test
     @DisplayName("Test save client with duplicate email functionality")
     public void givenClient1ToSave_whenSaveClient_thenThrowException() {
-        Client client = DataUntil.getClient();
+        Client client = DataUntil.getClientPersistent();
 
         BDDMockito.given(clientRepositories.existsByEmail(anyString()))
                 .willReturn(true);
@@ -62,9 +62,9 @@ public class ClientServiceTests {
     }
 
     @Test
-    @DisplayName("Test find client bu id functionality")
+    @DisplayName("Test find client by id functionality")
     public void givenId_whenFindByID_thenClientIsFound() {
-        Client client = DataUntil.getClient();
+        Client client = DataUntil.getClientPersistent();
         client.setId(1L);
 
         BDDMockito.given(clientRepositories.findById(anyLong()))
@@ -77,7 +77,7 @@ public class ClientServiceTests {
     }
 
     @Test
-    @DisplayName("Test find client by not exists id functinality")
+    @DisplayName("Test find client by not exists id functionality")
     public void givenId_whenFindByNotExistId_thenThrowException() {
         BDDMockito.given(clientRepositories.findById(anyLong())).willReturn(Optional.empty());
 

@@ -9,7 +9,6 @@ import ru.varno.CaloriesAPI.dto.ClientDTO;
 import ru.varno.CaloriesAPI.dto.ErrorDTO;
 import ru.varno.CaloriesAPI.exceptions.UserNotFoundException;
 import ru.varno.CaloriesAPI.exceptions.UserWithDuplicateEmailException;
-import ru.varno.CaloriesAPI.models.Client;
 import ru.varno.CaloriesAPI.service.ClientService;
 
 @RestController
@@ -28,32 +27,31 @@ public class ClientController {
                             .message(bindingResult.getAllErrors().getFirst().getDefaultMessage())
                             .build());
         }
-        Client clientToSave = ClientDTO.toEntity(clientDTO);
-        try {
-            Client clientSaved = clientService.save(clientToSave);
-            return ResponseEntity.ok(ClientDTO.toDTO(clientSaved));
-        } catch (UserNotFoundException | UserWithDuplicateEmailException e) {
-            return ResponseEntity.badRequest()
-                    .body(ErrorDTO.builder()
-                            .status(400)
-                            .message(e.getMessage())
-                            .build());
-        }
+        return ResponseEntity.ok(ClientDTO.toDTO(clientService.save(ClientDTO.toEntity(clientDTO))));
     }
 
     @GetMapping
     public ResponseEntity<?> getClientCalories(@RequestParam Long id) {
-        try {
-            Client client = clientService.findById(id);
-            return ResponseEntity.ok(client.getCaloriesIntake());
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.badRequest()
-                    .body(ErrorDTO.builder()
-                            .status(404)
-                            .message(e.getMessage())
-                            .build());
-        }
 
+        return ResponseEntity.ok(clientService.findById(id).getCaloriesIntake());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorDTO> handleException(UserNotFoundException e) {
+        return ResponseEntity.badRequest()
+                .body(ErrorDTO.builder()
+                        .status(400)
+                        .message(e.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorDTO> handleException(UserWithDuplicateEmailException e) {
+        return ResponseEntity.badRequest()
+                .body(ErrorDTO.builder()
+                        .status(400)
+                        .message(e.getMessage())
+                        .build());
     }
 
 }

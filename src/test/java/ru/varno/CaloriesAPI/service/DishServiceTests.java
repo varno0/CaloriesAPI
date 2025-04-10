@@ -31,7 +31,7 @@ public class DishServiceTests {
     @Test
     @DisplayName("Test save new dish functionality")
     public void givenDishToSave_whenSaveNewDish_thenDishShouldBeSaved() {
-        Dish dish = DataUntil.getDish();
+        Dish dish = DataUntil.getDishPersistent();
         dish.setId(1L);
 
         BDDMockito.given(dishRepositories.existsByName(dish.getName())).willReturn(false);
@@ -47,7 +47,7 @@ public class DishServiceTests {
     public void givenDishWithDuplicateName_whenSaveNewDish_thenThrowException() {
         BDDMockito.given(dishRepositories.existsByName(anyString())).willReturn(true);
 
-        assertThrows(DishAlreadyExistsException.class, () -> dishService.save(DataUntil.getDish()));
+        assertThrows(DishAlreadyExistsException.class, () -> dishService.save(DataUntil.getDishPersistent()));
 
         verify(dishRepositories, never()).save(any(Dish.class));
     }
