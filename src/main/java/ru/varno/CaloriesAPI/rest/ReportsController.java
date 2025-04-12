@@ -34,7 +34,7 @@ public class ReportsController {
 
     @GetMapping("/getAllDailyReports")
     public ResponseEntity<?> getAllDailyReports(@RequestParam Long id) {
-        List<DailyReportDTO> reports = reportsService.getAllDailyReports(id);
+        List<DailyReportDTO> reports = reportsService.getCachedAllDailyReports(id);
         return ResponseEntity.ok(reports);
     }
 

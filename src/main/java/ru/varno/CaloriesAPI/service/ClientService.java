@@ -1,6 +1,7 @@
 package ru.varno.CaloriesAPI.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.varno.CaloriesAPI.exceptions.UserNotFoundException;
