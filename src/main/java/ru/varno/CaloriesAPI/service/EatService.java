@@ -10,6 +10,10 @@ import ru.varno.CaloriesAPI.repositories.ClientRepositories;
 import ru.varno.CaloriesAPI.repositories.DishRepositories;
 import ru.varno.CaloriesAPI.repositories.EatRepositories;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
