@@ -118,5 +118,5 @@ public class ReportsService {
                 .mapToDouble(Dish::getCalories)
                 .sum();
     }
-
+    
 }
