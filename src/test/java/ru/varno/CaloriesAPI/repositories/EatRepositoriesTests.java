@@ -1,10 +1,12 @@
 package ru.varno.CaloriesAPI.repositories;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.core.env.Environment;
 import ru.varno.CaloriesAPI.models.Client;
 import ru.varno.CaloriesAPI.models.Dish;
 import ru.varno.CaloriesAPI.models.Eat;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @DataJpaTest
 public class EatRepositoriesTests {
 
@@ -46,7 +49,8 @@ public class EatRepositoriesTests {
         eatRepositories.save(eat1);
         eatRepositories.save(eat2);
 
-        Timestamp timestamp = eatRepositories.findMinTimestamp(1L);
+        Timestamp timestamp = eatRepositories.findMinTimestamp(client.getId());
+        log.info("Minimal timestamp: {}", timestamp);
 
         assertThat(timestamp).isNotNull();
         assertThat(timestamp).isEqualTo(eat2.getTimestamp());
